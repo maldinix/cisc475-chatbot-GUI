@@ -8,7 +8,8 @@ This is a node application that uses electron to present the user with a GUI
 ## How to run
 1. Change into the root directory of the project
 2. Run ```npm install``` if there is not currently a node_modules directory
-3. Finally, to run the application run ```node_modules/.bin/electron .```
+3. Run ```npm install electron'''
+4. Finally, to run the application run ```node_modules/.bin/electron .```
 
 ## Things left to do:
 * Obtain file path from drag and drop
