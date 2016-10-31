@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Cyber 20/20 Chatbot</title>
+	</head>
+	<body>
+	<script>
+		function reply() {
+			document.getElementById("botresponse").innerHTML = document.getElementById("textbox").value;
+		}
+
+document.addEventListener('dragover', function (event) {
+  event.preventDefault();
+  console.log( "File Dragged Over");
+document.getElementById("botresponse").innerHTML = "File hovering";
+  return false;
+}, false);
+
+document.addEventListener('drop', function (event) {
+  
+  
+  event.preventDefault();
+  document.getElementById("botresponse").innerHTML = event.target.files.name;
+	//document.getElementById("botresponse").innerHTML = "File Dropped";
+  return false;
+}, false);
+	</script>
+		<h1>Cyber 20/20 Chatbot</h1>
+		<p>Use the text-box below to interface with the chat-bot</p>
+		<input id="textbox" type="text" placeholder="What family of malware is this?" />
+		<input type="submit"onclick="reply()"/>
+		<h2>Response</h2>
+		<p id="botresponse"></p>	
+	</body>
+</html>
