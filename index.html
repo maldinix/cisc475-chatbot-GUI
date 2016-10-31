@@ -6,31 +6,69 @@
 	</head>
 	<body>
 	<script>
-		function reply() {
-			document.getElementById("botresponse").innerHTML = document.getElementById("textbox").value;
-		}
 
-document.addEventListener('dragover', function (event) {
-  event.preventDefault();
-  console.log( "File Dragged Over");
-document.getElementById("botresponse").innerHTML = "File hovering";
-  return false;
-}, false);
+	function reply() {
+		document.getElementById("botresponse").innerHTML = document.getElementById("textbox").value;}
 
-document.addEventListener('drop', function (event) {
-  
-  
-  event.preventDefault();
-  document.getElementById("botresponse").innerHTML = event.target.files.name;
-	//document.getElementById("botresponse").innerHTML = "File Dropped";
-  return false;
-}, false);
+	document.addEventListener("dragover", function (event) {
+
+		event.preventDefault();
+
+  	console.log( "File Dragged Over");
+	  document.getElementById("botresponse").innerHTML = "File hovering";
+
+	return false;
+	}, false);
+
+	document.addEventListener("drop", function (event) {
+
+  	event.preventDefault();
+  	console.log( "File Dropped");
+
+
+ 	  // fetch FileList object
+    var files = event.target.files || event.dataTransfer.files;
+
+    var table = document.getElementById("reportTable");
+
+	  // process all File objects
+	  for (var i = 0, file; file = files[i]; i++) {
+
+	    // Append a new row to the HTML document
+	    var row = table.insertRow(-1);
+	    var cell1 = row.insertCell(0);
+	    var cell2 = row.insertCell(1);
+	    var cell3 = row.insertCell(2);
+
+	    cell1.innerHTML = files[i].name;
+	    cell2.innerHTML = files[i].size;
+	    cell3.innerHTML = files[i].type;
+
+	  }
+	  return false;
+	}, false);
+
+
 	</script>
 		<h1>Cyber 20/20 Chatbot</h1>
 		<p>Use the text-box below to interface with the chat-bot</p>
 		<input id="textbox" type="text" placeholder="What family of malware is this?" />
 		<input type="submit"onclick="reply()"/>
 		<h2>Response</h2>
-		<p id="botresponse"></p>	
+		<p id="botresponse"></p>
+
+		<table id = "reportTable" align="center" border = "1" width=80%>
+      <th>Name</th>
+      <th>Size</th>
+      <th>Type</th>
+
+      <tr id = "tableRow">
+        <td id = "fileName"></td>
+        <td id = "fileSize"></td>
+        <td id = "fileType"></td>
+	    </tr>
+
+    </table>
+
 	</body>
 </html>
