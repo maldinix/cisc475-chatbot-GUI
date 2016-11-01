@@ -25,7 +25,7 @@
   	event.preventDefault();
   	console.log( "File Dropped");
 
-		var sha1 = require('sha1');
+	  var sha256 = require('js-sha256');
 
 		//sha1("message");
 
@@ -48,7 +48,7 @@
 	    cell1.innerHTML = files[i].name;
 	    cell2.innerHTML = files[i].size;
 	    cell3.innerHTML = files[i].type;
-			cell4.innerHTML = sha1(files[i].name);
+			cell4.innerHTML = sha256(files[i].name);
 
 	  }
 	  return false;
