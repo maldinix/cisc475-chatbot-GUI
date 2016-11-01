@@ -25,6 +25,10 @@
   	event.preventDefault();
   	console.log( "File Dropped");
 
+		var sha1 = require('sha1');
+
+		//sha1("message");
+
 
  	  // fetch FileList object
     var files = event.target.files || event.dataTransfer.files;
@@ -39,10 +43,12 @@
 	    var cell1 = row.insertCell(0);
 	    var cell2 = row.insertCell(1);
 	    var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
 
 	    cell1.innerHTML = files[i].name;
 	    cell2.innerHTML = files[i].size;
 	    cell3.innerHTML = files[i].type;
+			cell4.innerHTML = sha1(files[i].name);
 
 	  }
 	  return false;
@@ -61,11 +67,13 @@
       <th>Name</th>
       <th>Size</th>
       <th>Type</th>
+			<th>Hash</th>
 
       <tr id = "tableRow">
         <td id = "fileName"></td>
         <td id = "fileSize"></td>
         <td id = "fileType"></td>
+				<td id = "fileHash"></td>
 	    </tr>
 
     </table>
