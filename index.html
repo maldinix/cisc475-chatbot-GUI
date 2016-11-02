@@ -89,6 +89,15 @@
 
 	}; // tryThis
 
+	function clearTable(){
+
+		var tableHeaderRowCount = 1;
+		var table = document.getElementById('reportTable');
+		var rowCount = table.rows.length;
+		for (var i = tableHeaderRowCount; i < rowCount; i++) {
+		    table.deleteRow(tableHeaderRowCount);
+		}
+  };
 
 	function displayText(responseText, status){
 
@@ -130,8 +139,11 @@
 	    </tr>
 
     </table>
-		<input id="button" type="submit" onclick="trythis()">
+		<input id="button" type="submit" value="Test Query" onclick="trythis()">
+		<input id="button" type="submit" value="Clear Table" onclick="clearTable()">
 		<p id="botresponse"></p>
+
+
 		<p id="GETstatus"></p>
 		<p id="parsedJSON"></p>
 
