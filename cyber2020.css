@@ -1,0 +1,23 @@
+body {
+    background-color: lightgray;
+}
+
+#title {
+  font-family: "Times New Roman", Times, serif;
+  font-style: oblique;
+  font-size:x-medium;
+}
+
+#quitAppButton {
+    float: right;
+}
+#refreshButton {
+    float: right;
+}
+
+
+#myChartDiv {
+  width: 480px;
+  height: 380px;
+  text-align: center;
+}

@@ -1,152 +1,208 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Cyber 20/20 Chatbot</title>
-		<script type="text/javascript" src="jquery-3.1.1.js" ></script>
+<head>
+	<meta charset="utf-8">
+	<title>Cyber 20/20 Chatbot</title>
+	<script type="text/javascript" src="jquery-3.1.1.js" ></script>
+	<link rel="stylesheet" type="text/css" href="cyber2020.css" media="screen" />
 
-	</head>
-	<body>
+	<!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- Numeric JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+
+</head>
+<body>
 	<script>
 
-	function reply() {
-		document.getElementById("botresponse").innerHTML = document.getElementById("textbox").value;
-	};
+		function submitHash() {
+
+			getDataFromBackEnd(document.getElementById("textboxGetHash").value);
+
+			return;
+		};
 
 
 
-	document.addEventListener("dragover", function (event)
-	{
-		event.preventDefault();
-
-		document.getElementById("botresponse").innerHTML = "File hovering";
-
-		return false;}, false
-	);
+		document.addEventListener("dragover", function (event) {
+			event.preventDefault();
+			return false;}, false
+		);
 
 
+		document.addEventListener("drop", function (event){
+			event.preventDefault();
+
+			buildTable(); // build table containing data on files dragged onto canvas
+
+			return false;
+		}, false);
 
 
-	document.addEventListener("drop", function (event)
-	{
-		event.preventDefault();
+		function buildTable(){
 
-		document.getElementById("botresponse").innerHTML = "File Dropped";
+			var sha256 = require('js-sha256');
+			var files = event.target.files || event.dataTransfer.files;
+			var table = document.getElementById("reportTable");
 
-	  var sha256 = require('js-sha256');
-		var files = event.target.files || event.dataTransfer.files;
-		var table = document.getElementById("reportTable");
+			for (var i = 0, file; file = files[i]; i++) {
 
-		for (var i = 0, file; file = files[i]; i++) {
+				// Append a new row to the HTML document
+				var row = table.insertRow(-1);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				var cell4 = row.insertCell(3);
 
-	    // Append a new row to the HTML document
-	    var row = table.insertRow(-1);
-	    var cell1 = row.insertCell(0);
-	    var cell2 = row.insertCell(1);
-	    var cell3 = row.insertCell(2);
-			var cell4 = row.insertCell(3);
-
-	    cell1.innerHTML = files[i].name;
-	    cell2.innerHTML = files[i].size;
-	    cell3.innerHTML = files[i].type;
-			cell4.innerHTML = sha256(files[i].name);
-		}
-	  return false;
-	}, false);
-
-  function trythis(){
+				cell1.innerHTML = files[i].name;
+				cell2.innerHTML = files[i].size;
+				cell3.innerHTML = files[i].type;
+				cell4.innerHTML = sha256(files[i].name);
 
 
-		 var myUrl = "http://fcas-test.us-east-1.elasticbeanstalk.com";
-     var myKey = "/devel";
+			};
 
 
-		 var myCommand = "/target/describe/Goodware";
-//		 var myCommand = "/threat/describe/0014ee0d96e989913c21e0e4414bb8c0b44997198bab5ae6a739da4987a4bfb5";
-//		 var myCommand = "/threat/list/0/10";
+			var data = [{
+				values: [files[0].size, files[1].size, files[2].size],
+				labels: [files[0].name, files[1].name, files[2].name],
 
-		 var myFullUrl = myUrl + myKey + myCommand;
+				type: 'pie'
+			}];
 
+			var layout = {
+				height: 380,
+				width: 480
+			};
 
- 	   document.getElementById("botresponse").innerHTML = "URL: " + myUrl + "<br>" +	"KEY: " + myKey + "<br>" + "COMMAND: " + myCommand;
-
-			 function httpGetAsync(myFullUrl, callback)
-			 {
-			     var xmlHttp = new XMLHttpRequest();
-			     xmlHttp.onreadystatechange = function() {
-			         if (xmlHttp.readyState == 4){
-			             callback(
-										 xmlHttp.responseText,
-										 xmlHttp.status);
-			         }
-			     }
-			     xmlHttp.open("GET", myFullUrl, true); // true for asynchronous
-			     xmlHttp.send(null);
-			 }
-
-       httpGetAsync(myFullUrl, displayText);
+			Plotly.newPlot('myChartDiv', data, layout);
 
 
-	}; // tryThis
+			return;
 
-	function clearTable(){
+		};
 
-		var tableHeaderRowCount = 1;
-		var table = document.getElementById('reportTable');
-		var rowCount = table.rows.length;
-		for (var i = tableHeaderRowCount; i < rowCount; i++) {
-		    table.deleteRow(tableHeaderRowCount);
-		}
-  };
+	function getDataFromBackEnd(myHash){
 
-	function displayText(responseText, status){
 
-		document.getElementById("GETstatus").innerHTML = "responseText: " + responseText;
+		var myUrl = "http://fcas-test.us-east-1.elasticbeanstalk.com";
+		var myKey = "/devel";
 
+
+		//     var myCommand = "/target/describe/Goodware";
+		//		 var myCommand = "/threat/describe/0014ee0d96e989913c21e0e4414bb8c0b44997198bab5ae6a739da4987a4bfb5";
+		//		 var myCommand = "/threat/list/0/10";
+
+	  var myCommand = "/threat/describe/";
+
+
+		var myFullUrl = myUrl + myKey + myCommand + myHash;
+
+		function httpGetAsync(myFullUrl, callback) {
+
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.onreadystatechange = function() {
+				if (xmlHttp.readyState == 4){
+					callback(
+						xmlHttp.responseText,
+						xmlHttp.status);
+					}
+				}
+				xmlHttp.open("GET", myFullUrl, true); // true for asynchronous
+				xmlHttp.send(null);
+			}
+
+			httpGetAsync(myFullUrl, displayJSONText);
+
+
+		}; // tryThis
+
+		function refresh(){
+
+			// empty table
+			var tableHeaderRowCount = 1;
+			var table = document.getElementById('reportTable');
+			var rowCount = table.rows.length;
+			for (var i = tableHeaderRowCount; i < rowCount; i++) {
+				table.deleteRow(tableHeaderRowCount);
+			}
+
+			// clear hash text box
+			document.getElementById("textboxGetHash").value = "";
+
+			// clear responsetext
+			document.getElementById("responseJSON").innerHTML = "";
+			document.getElementById("parsedJSON").innerHTML = "";
+
+			// remove chart
+			var div = document.getElementById('myChartDiv');
+			while(div.firstChild){
+			    div.removeChild(div.firstChild);
+			}
+			return;
+
+		};
+
+
+		function displayJSONText(responseText, status){
+
+			document.getElementById("responseJSON").innerHTML = "responseText: " + responseText;
+
+/*
 			var txt = JSON.parse(responseText);
 
 			document.getElementById("parsedJSON").innerHTML =
 			"Target: " + txt.target +
 			"<br>Description: " + txt.description +
 			"<br>Severity: " + txt.severity;
+*/
+
+		};
+
+		function quitApp(){
+			window.opener = self;
+			window.close();
+		}
 
 
-	};
 
 
-  </script>
+		</script>
 
 
 
 
-		<h1>Cyber 20/20 Chatbot</h1>
-		<p>Use the text-box below to interface with the chat-bot</p>
-		<input id="textbox" type="text" placeholder="What family of malware is this?" />
-		<input type="submit" onclick="reply()"/>
-		<h2>Response</h2>
+		<h1 id="title">Cyber 20/20 Chatbot</h1>
+		<input id="textboxGetHash" type="text" placeholder="Enter hash here" style="width: 460px;"/>
+		<input type="submit" value="Submit Hash" onclick="submitHash()"/>
 
-		<table id = "reportTable" align="center" border = "1" width=80%>
-      <th>Name</th>
-      <th>Size</th>
-      <th>Type</th>
+		<input id="quitAppButton" type="submit" value="Quit" onclick="quitApp()">
+		<input id="refreshButton" type="submit" value="Refresh" onclick="refresh()">
+
+		<table id = "reportTable" align="center" border = "1" width=100%>
+			<th>Name</th>
+			<th>Size</th>
+			<th>Type</th>
 			<th>Hash</th>
 
-      <tr id = "tableRow">
-        <td id = "fileName"></td>
-        <td id = "fileSize"></td>
-        <td id = "fileType"></td>
+			<tr id = "tableRow">
+				<td id = "fileName"></td>
+				<td id = "fileSize"></td>
+				<td id = "fileType"></td>
 				<td id = "fileHash"></td>
-	    </tr>
+			</tr>
 
-    </table>
-		<input id="button" type="submit" value="Test Query" onclick="trythis()">
-		<input id="button" type="submit" value="Clear Table" onclick="clearTable()">
-		<p id="botresponse"></p>
+		</table>
 
 
-		<p id="GETstatus"></p>
+		<p id="responseJSON"></p>
 		<p id="parsedJSON"></p>
 
-		<div></div>
+
+<!--		<div id="myChartDiv"  style="width: 480px; height: 380px;"></div>-->
+		<div id="myChartDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+
+
 	</body>
-</html>
+	</html>
