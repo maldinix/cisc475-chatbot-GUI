@@ -17,10 +17,20 @@ document.addEventListener("drop", function (event){
 
 function createChart(files){
 
+  var sizes = [];
+  var names = [];
+
+  for (var i = 0, file; file = files[i]; i++) {
+
+    sizes.push(files[i].size);
+    names.push(files[i].name);
+
+  };
+
   var data = [{
 
-    values: [files[0].size, files[1].size, files[2].size],
-    labels: [files[0].name, files[1].name, files[2].name],
+    values: sizes,
+    labels: names,
 
     type: 'pie'
   }];
@@ -116,7 +126,12 @@ function refresh(){
   return;
 };
 
+function displayStuff(disp){
 
+  document.getElementById("parsedJSON").innerHTML = disp;
+
+
+};
 
 function quitApp(){
   window.opener = self;
@@ -126,7 +141,7 @@ function quitApp(){
 
 var oput = "";
 
-function traverse(x, level) {
+function traverseJSON(x, level) {
 
   if (isArray(x)) {
     traverseArray(x, level);
@@ -144,7 +159,7 @@ function isArray(o) {
 function traverseArray(arr, level) {
 //  console.log(level + "<array>");
   arr.forEach(function(x) {
-    traverse(x, level + "  ");
+    traverseJSON(x, level + "  ");
   });
 };
 
@@ -155,7 +170,7 @@ function traverseObject(obj, level) {
 
       oput = oput +  key + ":";
 
-      traverse(obj[key], level + "    ");
+      traverseJSON(obj[key], level + "    ");
     };
   };
 };
@@ -165,10 +180,10 @@ function traverseObject(obj, level) {
 
 function processJSONText(responseText, status){
 
-  document.getElementById("responseJSON").innerHTML = "responseText: " + responseText;
+//  document.getElementById("responseJSON").innerHTML = "responseText: " + responseText;
 
   var obj = JSON.parse(responseText);
-  traverse(obj);
+  traverseJSON(obj);
   document.getElementById("parsedJSON").innerHTML = "parsedJSON: " + oput;
 
 };
