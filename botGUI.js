@@ -130,7 +130,9 @@ function refresh(){
 
 function displayStuff(disp){
 
+
   document.getElementById("parsedJSON").innerHTML = disp;
+  oput = "";
 
 
 };
@@ -170,6 +172,7 @@ function traverseArray(arr, level) {
 function traverseObject(obj, level) {
 //  console.log(level + "<object>");
   for (var key in obj) {
+
     if (obj.hasOwnProperty(key)) {
 
       oput +=  key + "<br>";
@@ -179,15 +182,14 @@ function traverseObject(obj, level) {
   };
 };
 
-
-
-
 function processJSONText(responseText, status){
 
 //  document.getElementById("responseJSON").innerHTML = "responseText: " + responseText;
 
   var obj = JSON.parse(responseText);
   traverseJSON(obj);
-  document.getElementById("parsedJSON").innerHTML = "parsedJSON: " + oput;
+  //document.getElementById("parsedJSON").innerHTML = "parsedJSON: " + oput;
+
+  displayStuff(oput);
 
 };
