@@ -112,7 +112,7 @@ function refresh(){
       table.deleteRow(tableHeaderRowCount);
   };
 
-  document.getElementById("textboxGetHash").value = "";
+  //document.getElementById("textboxGetHash").value = "";
   document.getElementById("responseJSON").innerHTML = "";
   document.getElementById("parsedJSON").innerHTML = "";
 
@@ -140,7 +140,6 @@ function quitApp(){
 
 
 var oput = "";
-
 function traverseJSON(x, level) {
 
   if (isArray(x)) {
@@ -168,7 +167,7 @@ function traverseObject(obj, level) {
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
 
-      oput = oput +  key + ":";
+      oput +=  key + "<br>";
 
       traverseJSON(obj[key], level + "    ");
     };
