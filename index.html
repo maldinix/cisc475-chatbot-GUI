@@ -14,6 +14,7 @@
   <!-- Numeric JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
 
+	<script src="bcl.js"></script>
 
 </head>
 
@@ -29,20 +30,31 @@
 		<input id="quitAppButton" type="submit" value="Quit" onclick="quitApp()">
 		<input id="refreshButton" type="submit" value="Refresh" onclick="refresh()">
 
-		<table id = "reportTable" align="center" border = "1" width=100%>
-			<th>Name</th>
-			<th>Size</th>
-			<th>Type</th>
-			<th>Hash</th>
 
-			<tr id = "tableRow">
-				<td id = "fileName"></td>
-				<td id = "fileSize"></td>
-				<td id = "fileType"></td>
-				<td id = "fileHash"></td>
-			</tr>
 
-		</table>
+		<form id="bclform" onSubmit="return bcl_go( this );">
+		<input id="bclline" type="text" placeholder="Enter ChatBot Command" name="cmd" size="80">
+		</form>
+
+	<div id="myframe">
+
+					<table id = "reportTable" align="center" border = "1" width=100%>
+						<th>Name</th>
+						<th>Size</th>
+						<th>Type</th>
+						<th>Hash</th>
+
+						<tr id = "tableRow">
+							<td id = "fileName"></td>
+							<td id = "fileSize"></td>
+							<td id = "fileType"></td>
+							<td id = "fileHash"></td>
+						</tr>
+
+					</table>
+
+				</div>
+
 
 
 		<p id="responseJSON"></p>
@@ -51,7 +63,6 @@
 
 <!--		<div id="myChartDiv"  style="width: 480px; height: 380px;"></div>-->
 		<div id="myChartDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
-
 
 
 	</body>

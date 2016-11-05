@@ -115,6 +115,8 @@ function refresh(){
   //document.getElementById("textboxGetHash").value = "";
   document.getElementById("responseJSON").innerHTML = "";
   document.getElementById("parsedJSON").innerHTML = "";
+  document.getElementById("bclline").value = "";
+  document.getElementById("bclline").placeholder = document.getElementById("bclline").placeholder;
 
   // remove chart
   var div = document.getElementById('myChartDiv');
@@ -137,6 +139,9 @@ function quitApp(){
   window.opener = self;
   window.close();
 };
+
+
+
 
 
 var oput = "";
